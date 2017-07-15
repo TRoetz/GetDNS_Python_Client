@@ -3,10 +3,12 @@ import sys
 import requests
 import json
 
-username = "test@example.com" # Your registered username with GetDNS.Co
-password = "testpass"			# Your registered password with GetDNS.Co
+# Update the following
+username = "test@example.com" 	# Your registered username with GetDNS.Co
+password = "testpassword"		# Your registered password with GetDNS.Co
 
-yourhost = "electricfence.web.direct" # Your host you created on GetDNS.Co that you want to update.
+yourhost = "tesa" 				# Your host you created on GetDNS.Co that you want to update.
+getdnsDomain = "web.direct"		# The Domain picked when you created your host
 
 bearer_token = ""
 ipAddress = ""
@@ -39,8 +41,22 @@ def getDNSIP() :
 		data = response.json()
 		ipAddress = data['ipAddress']
 
-def updateARecord() : # TODO
+def updateARecord() :
 	print("Updating DNS...")
+	url = "https://getdns.co/api/dns/ARecord"
+	payload = "{\"IPAddress\":\""+ipAddress+"\",\"Hostname\":\""+yourhost+"\", \"Domain\":\""+getdnsDomain+"\"}"
+	headers = {
+	    'content-type': "application/json",
+		'authorization': bearer_token,
+		'cache-control': "no-cache"
+		}
+	response = requests.request("PUT", url, data=payload, headers=headers)
+	if response.status_code == 200 :
+		print("IP Address: "+ipAddress+" uptated for "+yourhost+"."+getdnsDomain)
+		return True
+	else :
+		print (response.status_code)
+	return False
 		
 def main():
 	if getLoginToken(username,password):
