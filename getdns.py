@@ -44,7 +44,7 @@ def getDNSIP() :
 def updateARecord() :
 	print("Updating DNS...")
 	url = "https://getdns.co/api/dns/ARecord"
-	payload = '{"IPAddress":"%s","Hostname":"%s", "Domain":"%s"}' % (ipAddress, yourhost, getdnsDomain)
+	payload = '{"IPAddress":"{0}","Hostname":"{1}", "Domain":"{2}"}'.format(ipAddress, yourhost, getdnsDomain)
 	headers = {
 	    'content-type': "application/json",
 		'authorization': bearer_token,
@@ -52,7 +52,7 @@ def updateARecord() :
 		}
 	response = requests.request("PUT", url, data=payload, headers=headers)
 	if response.status_code == 200 :
-		print("IP Address: %s updated for %s.%s" % (ipAddress, yourhost, getdnsDomain))
+		print("IP Address: {0} updated for {1}.{2}".format(ipAddress, yourhost, getdnsDomain))
 		return True
 	else :
 		print (response.status_code)
